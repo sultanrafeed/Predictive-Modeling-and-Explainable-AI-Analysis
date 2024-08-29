@@ -1,63 +1,37 @@
-**Predictive Modeling and Explainable AI Analysis of Farm Features and Practices Impacting
-White Spot Disease Prevalence in Farmed Shrimps in Bangladesh**
+# Predictive Modeling and Explainable AI Analysis of White Spot Disease in Farmed Shrimp
 
-Abstract—White Spot Disease (WSD) is a highly contagious
-viral infection that can lead to the rapid death of crustacean
-(shrimp, crab, prawn, etc.) populations. In our study, we implemented
-different machine-learning tools and algorithms to
-predict whether the prevalence of WSD in farmed shrimp will
-increase, decrease, or remain unchanged based on the features
-of shrimp farms in Bangladesh and their associated farming
-practices. We achieved an accuracy of 72.67%.
+## Overview
+White Spot Disease (WSD) is a highly contagious viral infection that can rapidly kill shrimp, crab, and prawn populations. This study uses machine learning to predict WSD prevalence in farmed shrimp in Bangladesh based on various farm features and practices, achieving an accuracy of 72.67%. By employing SHAP (SHapley Additive exPlanations), we also identified the impact of different farming practices on WSD trends, offering valuable insights for disease management.
 
+## Key Features
+- **Disease Focus**: White Spot Disease (WSD) in crustaceans
+- **Geographic Focus**: Shrimp farms in Bangladesh
+- **ML Accuracy**: 72.67%
+- **Explainability Tool**: SHAP for insights into farming practices
 
-Furthermore, we used SHAP (SHapley Additive exPlanations)
-explainable AI to discover the effects of different farm features
-and practices on the change in prevalence, offering valuable
-insights into various trends in the data. Hence, this research
-has the potential to help minimize the prevalence of White Spot
-Disease in farmed shrimps in Bangladesh.
+## Methods
+### Predictive Modeling
+We implemented various machine learning algorithms to predict changes in WSD prevalence, classified into three categories:
+- **Class -1**: Decrease of at least 10%
+- **Class 0**: Change less than 10%
+- **Class 1**: Increase of at least 10%
 
+### Explainable AI with SHAP
+Using SHAP values, we explored how specific farm features and practices influence changes in WSD prevalence, providing actionable insights.
 
+## Data Handling
+### Label Generation
+Labels are generated based on the percentage change in prevalence:
 
-We classify changes in prevalence into three distinct classes:
-• Class -1: There was a decrease of at least 10%
-• Class 0: Change in prevalence was less than 10%
-• Class 1: There was an increase of at least 10%
+```python
+def generate_label(current_prev, previous_prev):
+    change = 0
+    if current_prev <= 0.9 * previous_prev:
+        change = -1
+    elif current_prev >= 1.1 * previous_prev:
+        change = 1
+    return change
 
-**Algorithm 1 Label generation**
-𝑐𝑢𝑟𝑟𝑒𝑛𝑡 𝑝𝑟𝑒𝑣 ← the current prevalence
-𝑝𝑟𝑒𝑣𝑖𝑜𝑢𝑠 𝑝𝑟𝑒𝑣 ← the previous prevalence
-𝑐ℎ𝑎𝑛𝑔𝑒 ← 0
-if 𝑐𝑢𝑟𝑟𝑒𝑛𝑡 𝑝𝑟𝑒𝑣 ≤ 0.9 · 𝑝𝑟𝑒𝑣𝑖𝑜𝑢𝑠 𝑝𝑟𝑒𝑣 then
-𝑐ℎ𝑎𝑛𝑔𝑒 ← −1
-else if 𝑐𝑢𝑟𝑟𝑒𝑛𝑡 𝑝𝑟𝑒𝑣 ≥ 1.1 · 𝑝𝑟𝑒𝑣𝑖𝑜𝑢𝑠 𝑝𝑟𝑒𝑣 then
-𝑐ℎ𝑎𝑛𝑔𝑒 ← 1
-else
-𝑐ℎ𝑎𝑛𝑔𝑒 ← 0
-end if
-
-**Handling missing values**
-Analyzing the dataset, we find that the only columns missing
-values are “Temperature”, “pH”, and “Salinity.”
-Since they are all continuous variables from environment
-variables, we could use the mean of all the values in the
-columns. However, the mean across all values is likely less
-accurate than that across all the values for the corresponding
-zone in which the farm with the missing value belongs.
-Hence, instead of a “global mean,” we used a “zonal
-mean” to fill the missing values. Algorithm 2 demonstrates
-our process of handling null values for continuous features
-with missing values.
-
-**Algorithm 2 Fill Nulls with Zonal Mean**
-function FILLNULLSWITHZONALMEAN(𝑑𝑓 , 𝑐𝑜𝑙)
-𝑔𝑟𝑜𝑢𝑝𝑒𝑑 𝑧𝑜𝑛𝑒𝑠 ← 𝑑𝑓 .groupby(′𝑍𝑜𝑛𝑒′)
-𝑧𝑜𝑛𝑎𝑙 𝑚𝑒𝑎𝑛 ←
-𝑔𝑟𝑜𝑢𝑝𝑒𝑑 𝑧𝑜𝑛𝑒𝑠[𝑐𝑜𝑙].transform(′𝑚𝑒𝑎𝑛′)
-𝑑𝑓 [𝑐𝑜𝑙].fillna(𝑧𝑜𝑛𝑎𝑙 𝑚𝑒𝑎𝑛, inplace = True)
-return 𝑑𝑓
-end function
 
 **Results:**
 
