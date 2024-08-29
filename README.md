@@ -32,7 +32,7 @@ def generate_label(current_prev, previous_prev):
         change = 1
     return change
 
-
+```
 **Results:**
 
 **First grid search for Random Forest Classifier**
